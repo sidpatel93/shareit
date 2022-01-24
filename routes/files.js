@@ -39,10 +39,10 @@ router.post('/', (req, res) => {
       }
         // Store info in DB
         const file = new File({
-          filename: req.file.filename,
+          fileName: req.file.filename,
           uuid: uuid4(),
           path: req.file.path,
-          size: req.file.size
+          fileSize: req.file.size
         });
 
         const response = await file.save();
