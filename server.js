@@ -8,6 +8,8 @@ const path = require('path')
 // Connection to DB
 dbConnection();
 
+app.use(express.static('public'))
+
 // Configure the template engine
 app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'ejs');
