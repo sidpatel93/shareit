@@ -52,6 +52,8 @@ dropZone.addEventListener("dragover", (e) => {
 
 dropZone.addEventListener("dragleave", (e) => {
   dropZone.classList.remove("dragged");
+
+  console.log("drag ended");
 });
 
 // file input change and uploader
@@ -76,7 +78,7 @@ fileURL.addEventListener("click", () => {
 });
 
 const uploadFile = () => {
-  //console.log("file added uploading");
+  // console.log("file added uploading");
 
   files = fileInput.files;
   const formData = new FormData();

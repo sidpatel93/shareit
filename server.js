@@ -6,9 +6,11 @@ const fileRoute = require('./routes/files')
 const showFileRoute = require('./routes/show')
 const downloadFileRoute = require('./routes/download')
 const path = require('path')
+const cors = require('cors')
 // Connection to DB
 dbConnection();
 
+app.use(cors())
 app.use(express.static('public'))
 
 // Configure the template engine
