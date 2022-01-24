@@ -49,10 +49,42 @@ router.post('/', (req, res) => {
         return res.json({file: `${process.env.APP_BASE_URL}/files/${response.uuid}`});
 
     })
-
-
-  // Response link
 })
 
+router.post('/send', async (req, res) => {
+  const { uuid, emailTo, emailFrom }  = req.body
+    // Validating the request 
+  if (!uuid || !emailFrom || !emailTo) {
+    return res.status(422).send({error: 'All fields are required'});
+  }
+
+  // Get the data from DB
+  const file = await File.findOne({uuid: uuid});
+  // If we already send the email to sender then, return error
+  if(file.sender) {
+    return res.status(422).send({error: 'Email already sent.'});
+  }
+  file.sender = emailFrom;
+  file.receiver = emailTo;
+  const response = await file.save();
+
+  // Send email
+  const sendMail = require('../helpers/emailService')
+  sendMail({
+    from: emailFrom,
+    to: emailTo,
+    subject: "shareIt fileshare",
+    text: `${emailFrom} share a file with you`,
+    html: require('../helpers/emailTemplate')({
+      emailFrom: emailFrom,
+      downloadLink: `${process.env.APP_BASE_URL}/files/${file.uuid}`,
+      size: parseInt(file.fileSize/1000) + 'KB',
+      expires: '24 Hours'
+    })
+  })
+
+  return res.send({success: true})
+
+})
 
 module.exports = router

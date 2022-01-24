@@ -11,6 +11,7 @@ const cors = require('cors')
 dbConnection();
 
 app.use(cors())
+app.use(express.json());
 app.use(express.static('public'))
 
 // Configure the template engine
